@@ -24,6 +24,8 @@ var Dapple = (function(){
         return alteredDate;
     };
 
+
+
     Year = {
         first_day: function(date) {
             var now = (date) ? date : new Date();
@@ -70,6 +72,24 @@ var Dapple = (function(){
     };
 
     Day = {
+        next: function(date) {
+            var now = (date) ? date : new Date();
+            now.setDate(now.getDate() + 1);
+
+            return now;
+        },
+        previous: function(date) {
+            var now = (date) ? date : new Date();
+            now.setDate(now.getDate() - 1);
+
+            return now;
+        },
+        travel: function(date, value) {
+            var now = (date) ? date : new Date();
+            now.setDate(now.getDate() + value);
+
+            return now;
+        },
         beginning: function(date) {
             var now = (date) ? date : new Date();
                 now.setHours(0);
@@ -170,20 +190,38 @@ var Dapple = (function(){
     function Dapple(date) {
         // accept date object and wrap it...
         // accept timestamp and wrap it...
+        // accept another instance of Dapple...
 
+        that = this;
         this.date = (date) ? date : new Date();
         this.time = function(){ return this.date.getTime() };
+
+        this.day = {
+            next: function() {
+                that.date = Day.next(that.date);
+            },
+            previous: function() {
+                that.date = Day.previous(that.date);
+            },
+            travel: function(value) {
+                that.date = Day.travel(that.date, value);
+            },
+            beginning: function() {
+                that.date = Day.beginning(that.date);
+            }
+        };
 
         this.forward = function(unit, interval) {
             this.date = Dapple.forward(this.date, unit, interval);
         };
 
+        this.forwardUntil = function(date, callback) {
+            // if this.date < date
+            // callback.apply(this, [date]);
+        };
+
         this.backward = function(unit, interval) {
-            if (unit == 'month') {
-                this.date = fromNow('month', -(interval), this.date);
-            } else {
-                this.date = fromNow(TimeUnits[unit], -(interval), this.date);
-            }
+            this.date = Dapple.backward(this.date, unit, interval);
         };
 
         this.next = function(unit) {
@@ -210,6 +248,18 @@ var Dapple = (function(){
             returnDate = fromNow('month', interval, date);
         } else {
             returnDate = fromNow(TimeUnits[unit], interval, date);
+        }
+
+        return returnDate;
+    };
+
+    Dapple.backward = function(date, unit, interval) {
+        var returnDate;
+
+        if (unit == 'month') {
+            returnDate = fromNow('month', -interval, date);
+        } else {
+            returnDate = fromNow(TimeUnits[unit], -interval, date);
         }
 
         return returnDate;

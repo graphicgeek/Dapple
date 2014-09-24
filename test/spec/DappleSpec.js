@@ -69,4 +69,42 @@ describe('Dapple', function() {3
             expect(dappleWithDatePassed.date).toEqual(expected);
         });
     });
+    
+    describe('Method: backward', function() {
+        it('Should decrease the date by one millisecond', function() {
+            dappleWithDatePassed.backward('millisecond', 1);
+            expected = new Date(1985, 1, 14, 23, 59, 59, 999);
+            expect(dappleWithDatePassed.date).toEqual(expected);
+        });
+
+        it('Should decrease the date by one second', function() {
+            dappleWithDatePassed.backward('second', 1);
+            expected = new Date(1985, 1, 14, 23, 59, 59, 0);
+            expect(dappleWithDatePassed.date).toEqual(expected);
+        });
+
+        it('Should decrease the date by one minute', function() {
+            dappleWithDatePassed.backward('minute', 1);
+            expected = new Date(1985, 1, 14, 23, 59, 0, 0);
+            expect(dappleWithDatePassed.date).toEqual(expected);
+        });
+
+        it('Should decrease the date by one hour', function() {
+            dappleWithDatePassed.backward('hour', 1);
+            expected = new Date(1985, 1, 14, 23, 0, 0, 0);
+            expect(dappleWithDatePassed.date).toEqual(expected);
+        });
+
+        it('Should decrease the date by one day', function() {
+            dappleWithDatePassed.backward('day', 1);
+            expected = new Date(1985, 1, 14, 0, 0, 0, 0);
+            expect(dappleWithDatePassed.date).toEqual(expected);
+        });
+
+        it('Should decrease the date by one month', function() {
+            dappleWithDatePassed.backward('month', 1);
+            expected = new Date(1985, 0, 15, 0, 0, 0, 0);
+            expect(dappleWithDatePassed.date).toEqual(expected);
+        });
+    });
 });
